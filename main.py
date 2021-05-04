@@ -126,7 +126,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     if message.content.startswith('among us'):
-        await message.channel.send("fuck off you annoying cunekmasfd")
+        await message.channel.send("kindly shut up")
     await client.process_commands(message)
 
 @client.command()
@@ -146,30 +146,30 @@ async def play(ctx):
     if role_choice == "Crewmate":
         role = Crewmate()
     await ctx.send(f"```Generating virtual world...You are {role.role}```")  # setting role
-    """starting = await ctx.send("```Awaiting landing...\
+    """starting = await ctx.send("```Vibing in space\
                             \n\t□□□□□□□□□□```")
     await asyncio.sleep(0.5)
-    await starting.edit(content="```Landed safely!\
+    await starting.edit(content="```Awaiting landing...\
                             \n\t■□□□□□□□□□```")
     await asyncio.sleep(1)
-    await starting.edit(content="```Loading air tank, checking pressure...\
+    await starting.edit(content="```Landed safely!\
                             \n\t■■■□□□□□□□```")
     await asyncio.sleep(1)
-    await starting.edit(content="```The possibilty of suffocation is great\
+    await starting.edit(content="```Loading air tank, checking pressure...\
                             \n\t■■■■■□□□□□```")
     await asyncio.sleep(1)
-    await starting.edit(content="```Doing ya mum\
+    await starting.edit(content="```Watering plants\
                             \n\t■■■■■■□□□□```")
     await asyncio.sleep(0.5)
-    await starting.edit(content="```Finishing your hent*i...\
+    await starting.edit(content="```Unloading trash chute\
                             \n\t■■■■■■■■□□```")
-    await asyncio.sleep(0.25)
+    await asyncio.sleep(0.5)
     await starting.edit(content="```Ready to go!\
                             \n\t■■■■■■■■■■```")"""
 
     if role.commontask == "Swipe card":  # card swipe task
-        msg_display = {"Crewmate": ["Nyooming to admin...", "Go to admin you nutsack"],
-                       "Imposter": ["You are faking card swipe...", "Ultimate stealth mode in admin gogogo"]}
+        msg_display = {"Crewmate": ["Nyooming to admin...", "Go to admin you nerd"],
+                       "Imposter": ["You are faking card swipe...", "Ultimate stealth mode in admin"]}
 
         task = numpy.random.choice(["Fill in the blank", "Card swipe task"])  # setting "game"
         await asyncio.sleep(1)
@@ -204,16 +204,16 @@ async def play(ctx):
                 await ctx.send(f"You fucking idiot. The answer is {commontasks_bank[task_result]}")
                 caught = np.random.choice([True, False], p=(0.35, 0.65))
                 if caught:
-                    await ctx.send(f"{colors_choice} killed you for being such a dumbass fuck")
+                    await ctx.send(f"{colors_choice} killed you for being such a dumbass")
                 else:
                     await ctx.send("Wrong answer? That's real sus... My susometer is really sussing you out right now")
                     role.susmeter += 1
 
     elif role.commontask == "Fix wiring":
         await ctx.send(f'Your task is: Fix wiring\n\
-                       {np.random.choice(["Nyooming to electrical", "Fix the wires bitch"])}')
+                       {np.random.choice(["Nyooming to electrical", "Fix the wires sir"])}')
         if type(role) == Crewmate:
-            await ctx.send(f"TASK TBA (im uncreative")
+            await ctx.send(f"tasknotfound(yet) (im uncreative")
         elif type(role) == Imposter:
             await ctx.send(f"You are faking wires.")
 
@@ -222,8 +222,8 @@ async def play(ctx):
         await ctx.send(killmessage_choice[-1])
         return
 
+""" -- beautiful command -- """
 @client.command()
-""" -- i hate this command -- """
 async def aum(ctx):
     sus = True
 
@@ -243,13 +243,17 @@ async def aum(ctx):
                 sus = False
     await ctx.send("amongus stopped")
 
-# purges channel, checks for perms
+
+""" -- hey look some commands where you actually don't lose brain cells ! -- """
+
+""" - purges channel, checks for perms"""
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def purge(ctx, amount=5):
     print(amount)
     await ctx.channel.purge(limit=amount)
 
+""" - send message when member joins"""
 @client.event
 async def on_member_join(member):
     embed = discord.Embed(title=f"Welcome {member}!",
@@ -259,6 +263,7 @@ async def on_member_join(member):
     embed.set_footer(icon_url=member.avatar_url, text='nyooming . . .')
     await member.guild.system_channel.send(embed=embed)
 
+""" - send message when member leaves"""
 @client.event
 async def on_member_remove(member):
     embed = discord.Embed(title=f"{member} has left the server!",
@@ -268,6 +273,7 @@ async def on_member_remove(member):
     embed.set_footer(icon_url=member.avatar_url, text='nyooming . . .')
     await member.guild.system_channel.send(embed=embed)
 
+"""- update status (thanks jayjay ;-;)"""
 @client.command()
 async def playing(ctx):
     msg = ctx.message.content.split(" ")
