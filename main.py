@@ -306,8 +306,9 @@ async def giverole_error(ctx, error):
     elif isinstance(error, discord.HTTPException):
         await ctx.send("There was an error. Sorry about that \U0001F626")
 
-""" - Long code for nothing, but I don't particularly make the best use of my time
-      Also probably really inefficient """
+""" - Will probably never be used, but I don't particularly make the best use of my time
+      Also probably really inefficient
+      But it works so that's pretty cool """
 @client.command()
 @commands.has_guild_permissions(manage_roles=True)
 async def createrole(ctx, *, name):
@@ -420,6 +421,7 @@ async def createrole(ctx, *, name):
                                     mentionable=mentionable)
     await ctx.send(embed=ctxsend(f"Role `{name}` created!"))
 
+""" - error check for .createrole command """
 @createrole.error
 async def createrole_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
