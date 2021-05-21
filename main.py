@@ -8,8 +8,7 @@ from discord.ext import commands
 import asyncio
 
 token = open("token.txt", "r").read()
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 colors = ("Red", "Green", "Blue", "Yellow", "Black", "White", "Cyan", "Lime")
 colors_choice = np.random.choice(colors)
@@ -25,16 +24,16 @@ commontasks_bank = {"Never drink _ _ _ _ _   _ _ potions at 3 AM!": "among us",
                     "Shut the _ _ _ _ up about among us": "FUCK",
                     "Unspeak,  _ _ _ _ _ lord": "cringe"}
 
-killmessage = {"Crewmate" : [f"You have been killed by {colors_choice}",
-                             f"Get absolutely destroyed by {colors_choice}",
-                             f"You perished from inferiority complex thanks to {colors_choice}",
-                             f"A wild {colors_choice} appeared! Brain exploded! Life gone!!"],
+killmessage = {"Crewmate": [f"You have been killed by {colors_choice}",
+                            f"Get absolutely destroyed by {colors_choice}",
+                            f"You perished from inferiority complex thanks to {colors_choice}",
+                            f"A wild {colors_choice} appeared! Brain exploded! Life gone!!"],
 
-               "Imposter" : [f"You killed {colors_choice}!",
-                             f"You destoryed {colors_choice}",
-                             f"You asserted your dominance on {colors_choice},"
-                             f"A bullet went through {colors_choice}'s head."
-                             f"STABBY STAB HEHE KNIFE GO STABERS RIP {colors_choice} LL"]}
+               "Imposter": [f"You killed {colors_choice}!",
+                            f"You destoryed {colors_choice}",
+                            f"You asserted your dominance on {colors_choice},"
+                            f"A bullet went through {colors_choice}'s head."
+                            f"STABBY STAB HEHE KNIFE GO STABERS RIP {colors_choice} LL"]}
 
 killmessage_choice = []
 
@@ -71,7 +70,6 @@ class Crewmate(Roles):
         self.killmessage = []
 
 
-
 class Imposter(Roles):
     def __init__(self):
         super().__init__()
@@ -91,8 +89,8 @@ async def card_swipe_task(ctx):
                   "```▰▰▰▰▰▰▱▱▱▱```", "```▰▰▰▰▰▰▰▰▰▱```", "```▰▰▰▰▰▰▰▰▰▰```")
 
     await card_msg.add_reaction('\U0001F7E2')
-    i=0
-    while i<len(card_swipe):
+    i = 0
+    while i < len(card_swipe):
         try:
             await client.wait_for('reaction_add', check=check, timeout=0.7)
         except asyncio.TimeoutError:
@@ -106,7 +104,7 @@ async def card_swipe_task(ctx):
             else:
                 ctx.send("You failed to swipe the card! (Dude how hard is it to react properly)")
                 return
-        i+=1
+        i += 1
 
 def fill_in_the_blank():
     key, answer = zip(*commontasks_bank["Fill in the blank"].items())
@@ -127,6 +125,8 @@ async def on_message(message):
         return
     if message.content.startswith('among us'):
         await message.channel.send("kindly shut up")
+    if message.content.startswith('nyoom'):
+        await message.channel.send("NYOOMING :3")
     await client.process_commands(message)
 
 @client.command()
@@ -146,7 +146,7 @@ async def play(ctx):
     if role_choice == "Crewmate":
         role = Crewmate()
     await ctx.send(f"```Generating virtual world...You are {role.role}```")  # setting role
-    """starting = await ctx.send("```Vibing in space\
+    starting = await ctx.send("```Vibing in space\
                             \n\t□□□□□□□□□□```")
     await asyncio.sleep(0.5)
     await starting.edit(content="```Awaiting landing...\
@@ -165,7 +165,7 @@ async def play(ctx):
                             \n\t■■■■■■■■□□```")
     await asyncio.sleep(0.5)
     await starting.edit(content="```Ready to go!\
-                            \n\t■■■■■■■■■■```")"""
+                            \n\t■■■■■■■■■■```")
 
     if role.commontask == "Swipe card":  # card swipe task
         msg_display = {"Crewmate": ["Nyooming to admin...", "Go to admin you nerd"],
@@ -241,7 +241,7 @@ async def aum(ctx):
         else:
             if message:
                 sus = False
-    await ctx.send("amongus stopped")
+    await ctx.send("FUCK YOU")
 
 
 """ -- hey look some commands where you actually don't lose brain cells ! -- """
@@ -251,7 +251,6 @@ async def aum(ctx):
 @commands.has_guild_permissions(manage_messages=True)
 @commands.bot_has_guild_permissions(manage_messages=True)
 async def purge(ctx, amount=5):
-    print(amount)
     await ctx.channel.purge(limit=amount)
 
 """ - send message when member joins """
@@ -284,7 +283,7 @@ async def playing(ctx, *, status):
 @client.command()
 @commands.has_guild_permissions(manage_roles=True)
 # @commands.bot_has_guild_permissions(manage_roles=True)
-async def giverole(ctx, users:commands.Greedy[discord.Member] = client.user, *, role:discord.Role = ' '):
+async def giverole(ctx, users: commands.Greedy[discord.Member] = client.user, *, role: discord.Role = ' '):
     for user in users:
         if role in user.roles:
             await ctx.send(f"Unable to give role: {user.mention} already has the role `{role}`")
@@ -340,20 +339,20 @@ async def createrole(ctx, *, name):
     if not(resume.content.lower() == "y" or resume.content.lower() == "yes"):
         return await ctx.send(embed=quit())
 
-    embed.insert_field_at(index=0, name = "Administrator Permissions:",
-                          value = """administrator\nban_members\
+    embed.insert_field_at(index=0, name="Administrator Permissions:",
+                          value="""administrator\nban_members\
                           \nkick_members\nmanage_channels\nmanage_emojis\
                           \nmanage_guild\nmanage_messages\nmanage_nicknames\
                           \nmanage_permissions\nmanage_roles\nmanage_webhooks\
                           \nmention_everyone\nview_audit_log\nview_guild_insights""",
-                          inline = True)
-    embed.insert_field_at(index=1, name = "Member Permissions",
-                          value = """change_nickname\nadd_reactions\nattach_files\
+                          inline=True)
+    embed.insert_field_at(index=1, name="Member Permissions",
+                          value="""change_nickname\nadd_reactions\nattach_files\
                           \ncreate_instant_invite\nembed_links\
                           \nexternal_emojis\nread_message_history\nread_messages\
                           \nsend_messages\nsend_tts_messages\
                           \nuse_external_emojis\nuse_slash_commands\nview_channel""",
-                          inline = True)
+                          inline=True)
     embed.insert_field_at(index=2, name="Voice Channel Permissions",
                           value="""connect\nspeak\nstream\
                           \nuse_voice_activation\nvalue\nrequest_to_speak\
@@ -366,35 +365,34 @@ async def createrole(ctx, *, name):
     if (permissions_msg.content.lower() == "q" or permissions_msg.content.lower() == "quit"):
         return await ctx.send(embed=quit())
     elif not (permissions_msg.content.lower() == "skip" or permissions_msg.content.lower() == "s"):
-        permissions_list=permissions_msg.content.split(",")
-        temp_list={}
+        permissions_list = permissions_msg.content.split(",")
+        temp_list = {}
         for permission in permissions_list:
-            temp_list[permission.strip()]=True
-        permissions=discord.Permissions(**temp_list)
-        print(permissions)
+            temp_list[permission.strip()] = True
+        permissions = discord.Permissions(**temp_list)
     else:
-        permissions=discord.Permissions.membership()
+        permissions = discord.Permissions.membership()
 
     embed.clear_fields()
 
     await ctx.send(embed=ctxsend("Enter a RBG seperated by commas OR press s to skip"))
     colour_msg = await client.wait_for('message', check=check, timeout=300)
-    if (colour_msg.content.lower() == "q" or colour_msg.content.lower() == "quit"):
+    if colour_msg.content.lower() == "q" or colour_msg.content.lower() == "quit":
         return await ctx.send(embed=quit())
     elif colour_msg.content.lower() == "skip" or colour_msg.content.lower() == "s":
         colour = discord.Colour.default()
     else:
-        rgb=colour_msg.content.split(",")
-        colour=discord.Colour.from_rgb(r=int(rgb[0]), g=int(rgb[1]), b=int(rgb[2]))
+        rgb = colour_msg.content.split(",")
+        colour = discord.Colour.from_rgb(r=int(rgb[0]), g=int(rgb[1]), b=int(rgb[2]))
 
     await ctx.send(embed=ctxsend("Should the role be shown separately in the member list? Y/N"))
     hoist_msg = await client.wait_for('message', check=check, timeout=100)
-    if (hoist_msg.content.lower() == "q" or hoist_msg.content.lower() == "quit"):
+    if hoist_msg.content.lower() == "q" or hoist_msg.content.lower() == "quit":
         return await ctx.send(embed=quit())
     elif (hoist_msg.content.lower == "y" or hoist_msg.content.lower() == "yes"):
-        hoist=True
+        hoist = True
     else:
-        hoist=False
+        hoist = False
     print(hoist)
 
     await ctx.send(embed=ctxsend("Should the role be mentionable? Y/N"))
@@ -402,9 +400,9 @@ async def createrole(ctx, *, name):
     if (mentionable_msg.content.lower() == "q" or mentionable_msg.content.lower() == "quit"):
         return await ctx.send(embed=quit())
     elif (mentionable_msg.content.lower == "y" or mentionable_msg.content.lower() == "yes"):
-        mentionable=True
+        mentionable = True
     else:
-        mentionable=False
+        mentionable = False
     print(mentionable)
 
     await ctx.send(embed=ctxsend(f"Creating role with the name: {name}\npermissions: {permissions},\
@@ -429,5 +427,32 @@ async def createrole_error(ctx, error):
     elif isinstance(error, discord.Forbidden):
         await ctx.send(f"I need `Manage roles` in order to do that!\
                         Please check my permissions and try again.")
+
+""" - repeats back what user says """
+@client.command()
+async def say(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send(message)
+
+""" - logs a deleted message """
+@client.event
+async def on_message_delete(message):
+    embed = discord.Embed(title=f"Message by {message.author} deleted in {client.get_channel(message.channel.id)}",
+                          description=message.content,
+                          inline=True)
+    embed.set_footer(icon_url=message.author.avatar_url, text=f"Today at HOW DO I ADD TIME")
+    await message.guild.system_channel.send(embed=embed)
+
+@client.event
+async def on_bulk_message_delete(messages):
+    embed = discord.Embed(title=f"Bulk messages deleted in {client.get_channel(messages[0].channel.id)}",
+                          description=f"{len(messages)} messages deleted")
+    embed.set_footer(icon_url=messages[0].author.avatar_url, text=f"Today at HOW DO I ADD TIME")
+    await messages[0].guild.system_channel.send(embed=embed)
+
+@client.event
+async def on_typing(channel, user, when):
+    print(f"{user} start typing at {when}!")
+
 
 client.run(token)
